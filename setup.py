@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 from setuptools import setup, find_packages
 
 
@@ -8,8 +7,7 @@ setup(name='acsone.buildbot.utils',
       description="A library providing some extensions to buildbot",
       long_description='\n'.join((
         open('README.rst').read(),
-        #open('CHANGES.rst').read(),
-    )),
+        )),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
@@ -30,7 +28,7 @@ setup(name='acsone.buildbot.utils',
       test_suite='tests',
       install_requires=[
         'buildbot'],
-     tests_require = [
+      tests_require=[
         'mock',
-    ]
+      ]
       )

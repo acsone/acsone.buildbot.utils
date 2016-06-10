@@ -14,7 +14,7 @@ from acsone.buildbot.status.web.hook.planio import _HEADER_CT
 from acsone.buildbot.status.web.hook.planio import _CT_JSON
 from acsone.buildbot.status.change_hook import register_extendable_change_hook
 
-# Sample Planio commit payload 
+# Sample Planio commit payload
 
 gitJsonPayload = """
 {
@@ -77,7 +77,8 @@ gitJsonPayload = """
       "id":145
    },
    "before":"ea93241d2b51ff1ce7d7944c46f76cfcf432f7b1",
-   "size":1
+   "size":1,
+   "ref": "refs/heads/master"
 }
 """
 
@@ -88,7 +89,7 @@ class TestChangeHookConfiguredWithGitChange(unittest.TestCase):
         register_extendable_change_hook()
         self.changeHook = change_hook.ChangeHookResource(
             dialects={'planio': {'method': planio.getChanges,
-                                 'codebase':'myCode'}})
+                                 'codebase': 'myCode'}})
 
     def check_changes(self, r, project='', codebase=None):
         self.assertEquals(len(self.request.addedChanges), 1)
@@ -106,7 +107,7 @@ class TestChangeHookConfiguredWithGitChange(unittest.TestCase):
         self.assertEquals(change["revision"],
                           '1b253c6b9ccb348b5098a4954b143c2317ea8b68')
         self.assertEquals(change["comments"], "test.txt")
-        #self.assertEquals(change["branch"], "master")
+        self.assertEquals(change["branch"], "master")
         self.assertEquals(
             change["revlink"],
             "https://acsone.plan.io/projects/sample_project/repository/228/"
@@ -115,8 +116,8 @@ class TestChangeHookConfiguredWithGitChange(unittest.TestCase):
         self.assertEquals(change.get("project"), project)
         self.assertEquals(change.get("codebase"), codebase)
 
-    # Test 'base' hook with attributes. We should get a json string representing
-    # a Change object as a dictionary. All values show be set.
+    # Test 'base' hook with attributes. We should get a json string
+    # representing a Change object as a dictionary. All values show be set.
     @defer.inlineCallbacks
     def testGitWithChange(self):
         self.request = FakeRequest()

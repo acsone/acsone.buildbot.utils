@@ -6,6 +6,7 @@ from buildbot.util import json
 from dateutil.parser import parse as dateparse
 from twisted.python import log
 import logging
+import re
 
 _HEADER_CT = 'Content-Type'
 _CT_JSON = 'application/json'
@@ -42,6 +43,16 @@ def _process_change(payload, options):
     # project = request.args.get('project', [''])[0]
     project = payload['repository']['full_name']
     changes = []
+    refname = payload['ref']
+
+    # We only care about regular heads, i.e. branches
+    match = re.match(r"^refs\/heads\/(.+)$", refname)
+    if not match:
+        log.msg("Ignoring refname `%s': Not a branch" % refname)
+        return changes
+
+    branch = match.group(1)
+
     if payload.get('deleted'):
         # log.msg("Branch `%s' deleted, ignoring" % branch)
         return changes
@@ -67,7 +78,7 @@ def _process_change(payload, options):
             'comments': commit['message'],
             'revision': commit['id'],
             'when_timestamp': when_timestamp,
-            # 'branch': branch,
+            'branch': branch,
             'revlink': commit['url'],
             'repository': repo_url,
             'project': project
