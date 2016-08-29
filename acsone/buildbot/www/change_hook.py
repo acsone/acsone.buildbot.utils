@@ -4,7 +4,7 @@
 
 import re
 
-from buildbot.status.web.change_hook import ChangeHookResource
+from buildbot.www.change_hook import ChangeHookResource
 from twisted.python import log
 
 original_getChanges = ChangeHookResource.getChanges
