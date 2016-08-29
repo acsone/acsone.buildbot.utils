@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='acsone.buildbot.utils',
-      version='1.0.0b1',
+      version='2.0.0b1',
       description="A library providing some extensions to buildbot",
       long_description='\n'.join((
         open('README.rst').read(),
